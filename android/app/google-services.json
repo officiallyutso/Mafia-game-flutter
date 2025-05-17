@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "338683060877",
+    "project_id": "mafia-d0684",
+    "storage_bucket": "mafia-d0684.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338683060877:android:855d5ae5d08666cbdab8c4",
+        "android_client_info": {
+          "package_name": "com.example.mafia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz9RlfbFEGC_AYj0IzyhxDpls2QqTtXIE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
