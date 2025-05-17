@@ -64,10 +64,11 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Icon(
-                  Icons.security,
-                  size: 80,
-                  color: Colors.red,
+                const Center(
+                  child: Text(
+                    '🎭',
+                    style: TextStyle(fontSize: 100, color: Colors.red),
+                  ),
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
