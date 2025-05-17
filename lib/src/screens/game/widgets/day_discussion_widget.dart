@@ -25,18 +25,8 @@ class DayDiscussionWidget extends StatelessWidget {
 
     return Column(
       children: [
-        // Player list
+        // Chat takes full height now
         Expanded(
-          flex: 2,
-          child: PlayerListWidget(
-            room: room,
-            currentPlayerId: currentPlayer.id,
-          ),
-        ),
-        
-        // Chat
-        Expanded(
-          flex: 3,
           child: StreamBuilder<QuerySnapshot>(
             stream: gameService.messagesStream(roomCode),
             builder: (context, snapshot) {

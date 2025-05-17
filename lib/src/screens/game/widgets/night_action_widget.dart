@@ -7,6 +7,8 @@ class NightActionWidget extends StatefulWidget {
   final Player currentPlayer;
   final GameService gameService;
   final String roomCode;
+  // Static set to track investigated players
+  static final Set<String> investigatedPlayerIds = {};
 
   const NightActionWidget({
     super.key,
@@ -40,6 +42,11 @@ class _NightActionWidgetState extends State<NightActionWidget> {
         widget.currentPlayer.role!,
         _selectedPlayerId!,
       );
+      
+      // If detective, add the investigated player to the set
+      if (widget.currentPlayer.role == PlayerRole.detective) {
+        NightActionWidget.investigatedPlayerIds.add(_selectedPlayerId!);
+      }
     } finally {
       if (mounted) {
         setState(() {

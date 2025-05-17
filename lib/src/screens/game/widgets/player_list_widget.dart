@@ -4,15 +4,25 @@ import '../../../models/game_room.dart';
 class PlayerListWidget extends StatelessWidget {
   final GameRoom room;
   final String currentPlayerId;
+  // Add a parameter to track investigated players
+  final Set<String>? investigatedPlayerIds;
 
   const PlayerListWidget({
     super.key,
     required this.room,
     required this.currentPlayerId,
+    this.investigatedPlayerIds,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Get the current player to check their role
+    final currentPlayer = room.players.firstWhere(
+      (p) => p.id == currentPlayerId,
+      orElse: () => Player(id: currentPlayerId, name: 'Unknown'),
+    );
+    final isDetective = currentPlayer.role == PlayerRole.detective;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -33,12 +43,16 @@ class PlayerListWidget extends StatelessWidget {
                 final player = room.players[index];
                 final isCurrentPlayer = player.id == currentPlayerId;
                 
-                // Get player role info if the player is dead or current player
+                // Get player role info if:
+                // 1. It's the current player (they know their own role)
+                // 2. The current player is a detective and has investigated this player
                 String? roleText;
                 IconData? roleIcon;
                 Color roleColor = Colors.grey;
                 
-                if (player.status == PlayerStatus.dead || isCurrentPlayer) {
+                final wasInvestigated = investigatedPlayerIds?.contains(player.id) ?? false;
+                
+                if (isCurrentPlayer || (isDetective && wasInvestigated)) {
                   switch (player.role) {
                     case PlayerRole.mafia:
                       roleText = 'Mafia';

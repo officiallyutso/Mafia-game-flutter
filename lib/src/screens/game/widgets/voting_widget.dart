@@ -23,6 +23,8 @@ class VotingWidget extends StatefulWidget {
 class _VotingWidgetState extends State<VotingWidget> {
   String? _selectedPlayerId;
   bool _isSubmitting = false;
+  // Use the constant from GameService
+  static const String skipVoteId = GameService.skipVoteId;
 
   Future<void> _submitVote() async {
     if (_selectedPlayerId == null) {
@@ -60,6 +62,46 @@ class _VotingWidgetState extends State<VotingWidget> {
 
     if (hasVoted) {
       final votedForId = widget.room.votes[widget.currentPlayer.id];
+      
+      // Handle skip vote display
+      if (votedForId == skipVoteId) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.how_to_vote,
+                color: Colors.amber,
+                size: 80,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'You have voted to:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'SKIP ELIMINATION',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.amber,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Waiting for other players to vote...',
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        );
+      }
+      
+      // Regular player vote display
       final votedForPlayer = widget.room.players.firstWhere(
         (p) => p.id == votedForId,
         orElse: () => Player(id: '', name: 'Unknown'),
@@ -116,14 +158,44 @@ class _VotingWidgetState extends State<VotingWidget> {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Select a player you suspect is a mafia member.',
+            'Select a player you suspect is a mafia member or skip elimination.',
             style: TextStyle(fontSize: 16),
           ),
           const SizedBox(height: 16),
           Expanded(
             child: ListView.builder(
-              itemCount: eligiblePlayers.length,
+              // +1 for the skip option
+              itemCount: eligiblePlayers.length + 1,
               itemBuilder: (context, index) {
+                // Skip option is the last item
+                if (index == eligiblePlayers.length) {
+                  final skipVotes = widget.room.votes.values
+                      .where((id) => id == skipVoteId)
+                      .length;
+                  
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: _selectedPlayerId == skipVoteId 
+                          ? Colors.amber 
+                          : Colors.grey[700],
+                      child: const Icon(
+                        Icons.skip_next,
+                        color: Colors.white,
+                      ),
+                    ),
+                    title: const Text('Skip Elimination'),
+                    subtitle: Text('Votes: $skipVotes'),
+                    selected: _selectedPlayerId == skipVoteId,
+                    selectedTileColor: Colors.amber.withOpacity(0.1),
+                    onTap: () {
+                      setState(() {
+                        _selectedPlayerId = skipVoteId;
+                      });
+                    },
+                  );
+                }
+                
+                // Regular player options
                 final player = eligiblePlayers[index];
                 final isSelected = _selectedPlayerId == player.id;
                 

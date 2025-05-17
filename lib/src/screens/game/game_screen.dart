@@ -26,6 +26,7 @@ class _GameScreenState extends State<GameScreen> {
   late String _roomCode;
   late Timer _phaseTimer;
   bool _showRoleReveal = true;
+  bool _showPlayerList = false; // Add this to toggle player list visibility
 
   @override
   void initState() {
@@ -112,6 +113,15 @@ class _GameScreenState extends State<GameScreen> {
           title: const Text('Mafia Game'),
           automaticallyImplyLeading: false,
           actions: [
+            // Add a button to toggle player list
+            IconButton(
+              icon: const Icon(Icons.people),
+              onPressed: () {
+                setState(() {
+                  _showPlayerList = !_showPlayerList;
+                });
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.exit_to_app),
               onPressed: _leaveGame,
@@ -154,33 +164,88 @@ class _GameScreenState extends State<GameScreen> {
               );
             }
 
-            return Column(
+            // Use Stack for mobile layout with overlay for player list
+            return Stack(
               children: [
-                // Game info and timer
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  color: Colors.grey[850],
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Phase: ${room.phase.toString().split('.').last.toUpperCase()}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                // Main game content
+                Column(
+                  children: [
+                    // Game info and timer
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      color: Colors.grey[850],
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Phase: ${room.phase.toString().split('.').last.toUpperCase()}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
-                        ),
+                          if (room.phaseEndTime != null)
+                            TimerWidget(endTime: room.phaseEndTime!),
+                        ],
                       ),
-                      if (room.phaseEndTime != null)
-                        TimerWidget(endTime: room.phaseEndTime!),
-                    ],
-                  ),
+                    ),
+                    
+                    // Main game content
+                    Expanded(
+                      child: _buildGameContent(room, currentPlayer),
+                    ),
+                  ],
                 ),
                 
-                // Main game content
-                Expanded(
-                  child: _buildGameContent(room, currentPlayer),
-                ),
+                // Player list overlay (conditionally shown)
+                if (_showPlayerList)
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    right: 0,
+                    width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
+                    child: GestureDetector(
+                      onTap: () {}, // Prevent taps from passing through
+                      child: Container(
+                        color: Colors.black.withOpacity(0.9),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'Players',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      setState(() {
+                                        _showPlayerList = false;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: PlayerListWidget(
+                                room: room,
+                                currentPlayerId: currentPlayer.id,
+                                investigatedPlayerIds: NightActionWidget.investigatedPlayerIds,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             );
           },

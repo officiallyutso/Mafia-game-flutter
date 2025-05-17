@@ -150,7 +150,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
               _buildTimeSlider(
                 'Day Discussion Time',
                 _dayTimeSeconds,
-                60,
+                0, //////////////////CHANGE KARNA HOGA YE TOH
                 300,
                 (value) => setState(() => _dayTimeSeconds = value),
               ),

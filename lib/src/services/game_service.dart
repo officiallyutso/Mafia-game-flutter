@@ -9,6 +9,9 @@ class GameService {
   CollectionReference get _roomsCollection => _firestore.collection('rooms');
   CollectionReference get _messagesCollection => _firestore.collection('messages');
   
+  // Add the skip vote ID constant
+  static const String skipVoteId = 'skip_vote';
+  
   // Generate a random 6-digit room code
   String _generateRoomCode() {
     final random = Random();
@@ -263,19 +266,31 @@ class GameService {
       voteCounts[targetId] = (voteCounts[targetId] ?? 0) + 1;
     });
     
+    // Check for skip votes
+    final skipVotes = voteCounts[skipVoteId] ?? 0;
+    
+    // Count total votes
+    int totalVotes = room.votes.length;
+    
     // Find the player with the most votes
     String? eliminatedId;
     int maxVotes = 0;
     
-    voteCounts.forEach((playerId, count) {
-      if (count > maxVotes) {
-        maxVotes = count;
-        eliminatedId = playerId;
-      } else if (count == maxVotes) {
-        // Tie - no elimination
-        eliminatedId = null;
-      }
-    });
+    // If half or more of the votes are to skip, then skip elimination
+    if (skipVotes >= totalVotes / 2) {
+      eliminatedId = null; // Skip elimination
+    } else {
+      // Process normal votes (excluding skip votes)
+      voteCounts.forEach((playerId, count) {
+        if (playerId != skipVoteId && count > maxVotes) {
+          maxVotes = count;
+          eliminatedId = playerId;
+        } else if (playerId != skipVoteId && count == maxVotes) {
+          // Tie - no elimination
+          eliminatedId = null;
+        }
+      });
+    }
     
     // Eliminate the player if there was a clear majority
     if (eliminatedId != null) {
