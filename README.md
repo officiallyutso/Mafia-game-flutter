@@ -15,6 +15,16 @@
   <img src="https://github.com/user-attachments/assets/7c9062c7-9d24-4b0e-8c0c-b176eadc4aee" alt="Mafia Game Feature Graphic" width="1000">
 </div>
 
+
+<div align="center">
+
+  <a href="https://play.google.com/store/apps/details?id=com.utsosarkar.mafia">
+    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200" alt="Get it on Google Play">
+  </a>
+
+</div>
+
+
 ## Table of Contents
 
 1. [Introduction](#-introduction)
