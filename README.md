@@ -1,9 +1,9 @@
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/1a9873af-2b09-4b36-9844-aca31d7a1ec7" alt="Mafia Game Logo" width="100">
+  <img src="https://github.com/user-attachments/assets/1a9873af-2b09-4b36-9844-aca31d7a1ec7" alt="Mafia Game Logo" width="75">
 </div>
 
-# 🎭 Mafia Party Game
+# Mafia - Party Game
 
 [![Flutter Version](https://img.shields.io/badge/Flutter-≥3.0.0-blue.svg)](https://flutter.dev/)
 [![Firebase](https://img.shields.io/badge/Firebase-Backend-orange.svg)](https://firebase.google.com/)
@@ -12,11 +12,7 @@
 
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/7c9062c7-9d24-4b0e-8c0c-b176eadc4aee" alt="Mafia Game Feature Graphic" width="600">
-</div>
-
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/60a89473-98de-44b8-af5d-841b3c70a608" alt="Mafia Game Screenshots" width="800">
+  <img src="https://github.com/user-attachments/assets/7c9062c7-9d24-4b0e-8c0c-b176eadc4aee" alt="Mafia Game Feature Graphic" width="1000">
 </div>
 
 ## Table of Contents
@@ -49,6 +45,11 @@
 **Mafia Party Game** is a digital implementation of the classic social deduction party game "Mafia" (also known as "Werewolf"). It's designed for mobile platforms using Flutter and Firebase, allowing friends to play together remotely. The game features real-time multiplayer functionality, role assignment, day/night cycles, voting mechanisms, and chat communication.
 
 This project demonstrates advanced Flutter development techniques, Firebase integration, real-time database usage, state management with providers and BLoC, and creating an engaging multiplayer experience.
+
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/60a89473-98de-44b8-af5d-841b3c70a608" alt="Mafia Game Screenshots" width="900">
+</div>
 
 ## Features
 
